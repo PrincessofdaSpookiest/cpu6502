@@ -45,6 +45,7 @@ void cpu6502_single_step() {
     case 0x69: adc(imm()); break;
     case 0x6D: adc(abs_()); break;
     case 0x71: adc(zpiy()); break;
+    case 0x72: adc(zpi()); break;
     case 0x75: adc(zpx()); break;
     case 0x79: adc(absy()); break;
     case 0x7D: adc(absx()); break;
@@ -54,6 +55,7 @@ void cpu6502_single_step() {
     case 0x29: and(imm()); break;
     case 0x2D: and(abs_()); break;
     case 0x31: and(zpiy()); break;
+    case 0x32: and(zpi()); break;
     case 0x35: and(zpx()); break;
     case 0x39: and(absy()); break;
     case 0x3D: and(absx()); break;
@@ -66,6 +68,8 @@ void cpu6502_single_step() {
 
     case 0x24: bit(zp()); break;
     case 0x2C: bit(abs_()); break;
+    case 0x34: bit(zpx()); break;
+    case 0x3C: bit(absx()); break;
 
     case 0x00: brk(); break;
 
@@ -73,6 +77,7 @@ void cpu6502_single_step() {
     case 0x30: bmi(imm()); break;
     case 0x50: bvc(imm()); break;
     case 0x70: bvs(imm()); break;
+    case 0x80: bra(imm()); break;
     case 0x90: bcc(imm()); break;
     case 0xB0: bcs(imm()); break;
     case 0xD0: bne(imm()); break;
@@ -88,6 +93,7 @@ void cpu6502_single_step() {
     case 0xC9: cmp(imm()); break;
     case 0xCD: cmp(abs_()); break;
     case 0xD1: cmp(zpiy()); break;
+    case 0xD2: cmp(zpi()); break;
     case 0xD5: cmp(zpx()); break;
     case 0xD9: cmp(absy()); break;
     case 0xDD: cmp(absx()); break;
@@ -105,6 +111,8 @@ void cpu6502_single_step() {
     case 0xD6: dec(zpx()); break;
     case 0xDE: dec(absx()); break;
 
+    case 0x3A: dec_a(); break;
+
     case 0xCA: dex(); break;
 
     case 0x88: dey(); break;
@@ -114,6 +122,7 @@ void cpu6502_single_step() {
     case 0x49: eor(imm()); break;
     case 0x4D: eor(abs_()); break;
     case 0x51: eor(zpiy()); break;
+    case 0x52: eor(zpi()); break;
     case 0x55: eor(zpx()); break;
     case 0x59: eor(absy()); break;
     case 0x5D: eor(absx()); break;
@@ -122,6 +131,8 @@ void cpu6502_single_step() {
     case 0xEE: inc(abs_()); break;
     case 0xF6: inc(zpx()); break;
     case 0xFE: inc(absx()); break;
+
+    case 0x1A: inc_a(); break;
 
     case 0xE8: inx(); break;
 
@@ -138,6 +149,7 @@ void cpu6502_single_step() {
     case 0xA9: lda(imm()); break;
     case 0xAD: lda(abs_()); break;
     case 0xB1: lda(zpiy()); break;
+    case 0xB2: lda(zpi()); break;
     case 0xB5: lda(zpx()); break;
     case 0xB9: lda(absy()); break;
     case 0xBD: lda(absx()); break;
@@ -167,15 +179,20 @@ void cpu6502_single_step() {
     case 0x09: ora(imm()); break;
     case 0x0D: ora(abs_()); break;
     case 0x11: ora(zpiy()); break;
+    case 0x12: ora(zpi()); break;
     case 0x15: ora(zpx()); break;
     case 0x19: ora(absy()); break;
     case 0x1D: ora(absx()); break;
 
     case 0x08: php(); break;
     case 0x48: pha(); break;
+    case 0xDA: phx(); break;
+    case 0x5A: phy(); break;
 
     case 0x28: plp(); break;
     case 0x68: pla(); break;
+    case 0xFA: plx(); break;
+    case 0x7A: ply(); break;
 
     case 0x26: rol(zp()); break;
     case 0x2A: rol_a(); break;
@@ -198,6 +215,7 @@ void cpu6502_single_step() {
     case 0xE9: sbc(imm()); break;
     case 0xED: sbc(abs_()); break;
     case 0xF1: sbc(zpiy()); break;
+    case 0xF2: sbc(zpi()); break;
     case 0xF5: sbc(zpx()); break;
     case 0xF9: sbc(absy()); break;
     case 0xFD: sbc(absx()); break;
@@ -210,6 +228,7 @@ void cpu6502_single_step() {
     case 0x85: sta(zp()); break;
     case 0x8D: sta(abs_()); break;
     case 0x91: sta(zpiy()); break;
+    case 0x92: sta(zpi()); break;
     case 0x95: sta(zpx()); break;
     case 0x99: sta(absy()); break;
     case 0x9D: sta(absx()); break;
@@ -221,6 +240,17 @@ void cpu6502_single_step() {
     case 0x84: sty(zp()); break;
     case 0x8C: sty(abs_()); break;
     case 0x94: sty(zpx()); break;
+
+    case 0x64: stz(zp()); break;
+    case 0x74: stz(zpx()); break;
+    case 0x9C: stz(abs_()); break;
+    case 0x9E: stz(absx()); break;
+
+    case 0x14: trb(zp()); break;
+    case 0x1C: trb(abs_()); break;
+
+    case 0x04: tsb(zp()); break;
+    case 0x0C: trb(abs_()); break;
 
     case 0x8A: txa(); break;
     case 0x98: tya(); break;

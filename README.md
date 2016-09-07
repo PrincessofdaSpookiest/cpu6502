@@ -9,13 +9,12 @@ Only `cpu6502.c` needs to be compiled--it directly includes `addrmodes.c` and `o
 
 ## Features:
 
-- All documented NMOS 6502 opcodes
+- All 65C02 opcodes
 
 ## To do:
 
-- Implement 65C02 opcodes
-- Add cycle count
-- Further testing; decimal mode has yet to be tested.
+- Add cycle counts
+- Test extra 65C02 opcodes and decimal mode
 
 ### Special thanks to:
 

@@ -74,6 +74,10 @@ static void bvs(uint16_t addr) {
   if (regs.p.v) regs.pc += (int8_t)mem_read(addr);
 }
 
+static void bra(uint16_t addr) {
+  regs.pc += (int8_t)mem_read(addr);
+}
+
 static void bcc(uint16_t addr) {
   if (!regs.p.c) regs.pc += (int8_t)mem_read(addr);
 }
@@ -134,6 +138,10 @@ static void dec(uint16_t addr) {
   mem_write(addr, result);
 }
 
+static void dec_a(void) {
+  calc_nz(--regs.a);
+}
+
 static void dex(void) {
   calc_nz(--regs.x);
 }
@@ -152,6 +160,10 @@ static void inc(uint16_t addr) {
 
   calc_nz(result);
   mem_write(addr, result);
+}
+
+static void inc_a(void) {
+  calc_nz(++regs.a);
 }
 
 static void inx(void) {
@@ -221,6 +233,14 @@ static void pha(void) {
   PUSH(regs.a);
 }
 
+static void phx(void) {
+  PUSH(regs.y);
+}
+
+static void phy(void) {
+  PUSH(regs.y);
+}
+
 static void plp(void) {
   regs.p_ = POP();
 }
@@ -228,6 +248,16 @@ static void plp(void) {
 static void pla(void) {
   regs.a = POP();
   calc_nz(regs.a);
+}
+
+static void plx(void) {
+  regs.x = POP();
+  calc_nz(regs.x);
+}
+
+static void ply(void) {
+  regs.y = POP();
+  calc_nz(regs.y);
 }
 
 static void rol(uint16_t addr) {
@@ -320,6 +350,22 @@ static void stx(uint16_t addr) {
 
 static void sty(uint16_t addr) {
   mem_write(addr, regs.y);
+}
+
+static void stz(uint16_t addr) {
+  mem_write(addr, 0);
+}
+
+static void trb(uint16_t addr) {
+  uint8_t temp = mem_read(addr);
+  mem_write(addr, temp & ~regs.a);
+  calc_nz(temp & regs.a);
+}
+
+static void tsb(uint16_t addr) {
+  uint8_t temp = mem_read(addr);
+  mem_write(addr, temp | regs.a);
+  calc_nz(temp & regs.a);
 }
 
 static void txa(void) {
