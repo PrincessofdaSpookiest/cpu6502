@@ -382,14 +382,17 @@ static void txs(void) {
   regs.s = regs.x;
   calc_nz(regs.s);
 }
+
 static void tay(void) {
   regs.y = regs.a;
   calc_nz(regs.y);
 }
+
 static void tax(void) {
   regs.x = regs.a;
   calc_nz(regs.x);
 }
+
 static void tsx(void) {
   regs.x = regs.s;
   calc_nz(regs.x);
